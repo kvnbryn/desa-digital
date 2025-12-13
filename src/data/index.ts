@@ -25,10 +25,9 @@ export const NAVIGATION = [
 export const HERO_CONTENT = {
   title: "Membangun Desa, \nMerajut Masa Depan.",
   subtitle: "Selamat datang di portal digital resmi Desa Tombatu Tiga Selatan. Informasi transparan, pelayanan prima, dan gotong royong menuju kesejahteraan.",
-  image: "/images/hero-sawa.jpg",
+  image: "/images/sawa-kuning11.jpg", 
 };
 
-// --- UPDATE: Menambahkan Icon String untuk Mapping di Page ---
 export const STATS = [
   { label: "Penduduk", value: "794", suffix: " Jiwa", icon: "Users", desc: "Total Populasi" },
   { label: "Kepala Keluarga", value: "225", suffix: " KK", icon: "Home", desc: "Keluarga Tercatat" },
@@ -56,6 +55,12 @@ export const HISTORY = {
       title: "Pemekaran Desa",
       desc: "Pada 28 April 2010, Desa Tombatu Tiga Selatan resmi dimekarkan dan disahkan menjadi desa mandiri, terpisah dari Desa Tombatu Tiga Induk."
     }
+  ],
+  leaders: [
+    { name: "Robert Arikalang", period: "2010 - 2011", role: "Pejabat Hukum Tua" },
+    { name: "Ruben J. Pondaag, S.Pd", period: "2011 - 2019", role: "Hukum Tua" },
+    { name: "Richard Kindangen, S.IP", period: "Jan - Okt 2019", role: "Pejabat Hukum Tua" },
+    { name: "Florence H. Kindangen, SH", period: "2019 - Sekarang", role: "Hukum Tua" },
   ]
 };
 
@@ -76,7 +81,7 @@ export const GOVERNMENT = {
   hukumTua: {
     name: "Florence H. Kindangen, SH",
     role: "Hukum Tua (Kepala Desa)",
-    image: null // Placeholder
+    image: null
   },
   officials: [
     { name: "Yennie Kojong", role: "Sekretaris Desa" },
@@ -92,6 +97,13 @@ export const GOVERNMENT = {
     { name: "Alvian H. Poluan", role: "Kepala Jaga II" },
     { name: "Maxi Munaische", role: "Kepala Jaga III" },
     { name: "Markus Mokalu", role: "Kepala Jaga IV" },
+  ],
+  bpd: [
+    { name: "Jeffrey M. Munaiseche, SH", role: "Ketua BPD" },
+    { name: "Julius J. Pondaag", role: "Wakil Ketua" },
+    { name: "Stien Rambembuoch", role: "Sekretaris" },
+    { name: "Apolos Langoy", role: "Bidang Pemerintahan" },
+    { name: "Rieske I.E. Monolimay, S.Pd", role: "Bidang Pemberdayaan" },
   ]
 };
 
@@ -100,26 +112,14 @@ export const POTENTIALS = [
     title: "Pertanian & Perkebunan",
     desc: "Komoditas utama meliputi Padi dan Jagung. Didukung lahan subur nan hijau.",
     icon: "Wheat",
-    image: "/images/hero-sawa.jpg"
+    image: "/images/alam-1.jpg" 
   },
   {
     title: "Keindahan Alam",
     desc: "Bentang alam yang asri dan udara sejuk khas pegunungan Minahasa.",
     icon: "Trees",
-    image: "/images/alam-1.jpg"
+    image: "/images/alam-5.jpg"
   },
-  {
-    title: "Sumber Daya Air",
-    desc: "Potensi sumber mata air alami yang melimpah untuk pertanian dan warga.",
-    icon: "Mountain",
-    image: "/images/alam-2.jpg"
-  },
-  {
-    title: "Potensi Wisata",
-    desc: "Peluang pengembangan wisata kuliner dan budaya lokal yang unik khas Tombatu.",
-    icon: "Utensils",
-    image: null
-  }
 ];
 
 export const SERVICES = [
@@ -175,11 +175,14 @@ export const SDGS_GOALS = [
 export const LOCATION = {
   title: "Lokasi Desa",
   desc: "Desa Tombatu Tiga Selatan terletak strategis di Kecamatan Tombatu, dikelilingi keindahan alam Minahasa Tenggara.",
-  googleMapsUrl: "http://googleusercontent.com/maps.google.com/7" 
+  googleMapsUrl: "http://googleusercontent.com/maps.google.com/7",
+  mapImage: "/images/peta-desa.jpg" 
 };
 
+// REVISI: Update Gallery Layout (2 Portrait + 4 Squares)
 export const GALLERY_ITEMS = [
-  { src: "/images/kegiatan-1.jpg", alt: "Sosialisasi Warga", span: "md:col-span-2 md:row-span-2" },
+  { src: "/images/sosialisasi-1.jpg", alt: "Sosialisasi Warga 1", span: "md:col-span-1 md:row-span-2" }, // Foto Portrait 1
+  { src: "/images/sosialisasi-2.jpg", alt: "Sosialisasi Warga 2", span: "md:col-span-1 md:row-span-2" }, // Foto Portrait 2
   { src: "/images/apel.jpg", alt: "Apel Pagi Perangkat", span: "md:col-span-1 md:row-span-1" },
   { src: "/images/warga.jpg", alt: "Kebersamaan Warga", span: "md:col-span-1 md:row-span-1" },
   { src: "/images/kegiatan-2.jpg", alt: "Kegiatan Desa", span: "md:col-span-1 md:row-span-1" },

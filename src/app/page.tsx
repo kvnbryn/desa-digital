@@ -15,11 +15,12 @@ import {
   LOCATION,
   GALLERY_ITEMS
 } from "@/data";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
 import { 
   ArrowRight, Leaf, Users, Crown, ChevronRight, Trees, Wheat, Utensils, 
-  CheckCircle2, MapPin, Mountain, Calendar, ArrowUpRight, Home as HomeIcon, Map, Flag
+  CheckCircle2, MapPin, Mountain, Calendar, ArrowUpRight, Home as HomeIcon, Map, Flag,
+  History as HistoryIcon, ChevronDown, ChevronUp, ZoomIn, X, Users2 // Icon baru Users2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -73,6 +74,11 @@ export default function Home() {
   
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  // State
+  const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isBpdOpen, setIsBpdOpen] = useState(false); // State baru buat BPD Dropdown
 
   return (
     <div className="flex flex-col bg-stone-50 w-full overflow-hidden selection:bg-emerald-500 selection:text-white">
@@ -145,7 +151,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- 2. STATS SECTION (GENIUS REWORK) --- */}
+        {/* --- 2. STATS SECTION --- */}
         <section className="relative z-20 -mt-20 md:-mt-24 mb-24 px-6">
           <div className="container mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -158,7 +164,6 @@ export default function Home() {
                   transition={{ delay: index * 0.1 }}
                   className="glass-card bg-white/95 p-6 md:p-8 rounded-2xl relative overflow-hidden shadow-2xl border-t border-white/60 transform transition-all hover:-translate-y-1 hover:shadow-emerald-500/10 group"
                 >
-                  {/* Decorative Background Icon */}
                   <div className="absolute -right-4 -bottom-4 text-emerald-100 opacity-50 group-hover:scale-110 group-hover:text-emerald-200 transition-all duration-500">
                     <IconWrapper icon={stat.icon} className="w-24 h-24 md:w-32 md:h-32" />
                   </div>
@@ -188,7 +193,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- 3. LAYANAN PUBLIK (With Action Icons) --- */}
+        {/* --- 3. LAYANAN PUBLIK --- */}
         <section id="layanan" className="py-20 md:py-32 container mx-auto px-6 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
           <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
             <SectionHeading>Layanan Publik Digital</SectionHeading>
@@ -228,10 +233,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- 4. SEJARAH (Timeline Icons) --- */}
+        {/* --- 4. SEJARAH --- */}
         <section id="tentang" className="py-20 md:py-32 bg-stone-100 px-6 overflow-hidden">
           <div className="container mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-16">
               
               <div className="order-2 lg:order-1 text-center lg:text-left">
                 <SectionHeading>Warisan Leluhur &<br className="hidden lg:block"/> Sejarah Panjang</SectionHeading>
@@ -284,10 +289,42 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
+
+            <div className="mt-12 md:mt-20">
+              <div className="text-center mb-10">
+                <h3 className="text-2xl font-bold text-stone-800 flex items-center justify-center gap-2">
+                  <HistoryIcon className="text-emerald-600" />
+                  Sejarah Kepemimpinan
+                </h3>
+                <p className="text-stone-500 mt-2">Daftar Hukum Tua yang pernah menjabat</p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {HISTORY.leaders?.map((leader, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="bg-white p-6 rounded-2xl border border-stone-100 shadow-sm hover:shadow-md transition-all text-center"
+                  >
+                    <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 font-bold text-sm">
+                      {idx + 1}
+                    </div>
+                    <h4 className="font-bold text-stone-900 mb-1">{leader.name}</h4>
+                    <p className="text-xs font-bold text-emerald-600 uppercase mb-2">{leader.role}</p>
+                    <p className="text-sm text-stone-500 bg-stone-100 py-1 px-3 rounded-full inline-block">
+                      {leader.period}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* --- 5. GALERI (Masonry Style) --- */}
+        {/* --- 5. GALERI --- */}
         <section id="galeri" className="py-20 md:py-32 bg-stone-50 px-6">
           <div className="container mx-auto">
             <div className="text-center mb-16 md:mb-20">
@@ -295,34 +332,68 @@ export default function Home() {
               <SectionSub className="mx-auto">Dokumentasi kegiatan kemasyarakatan yang terekam lensa.</SectionSub>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-auto md:h-[600px]">
-              {GALLERY_ITEMS.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className={cn(
-                    "relative rounded-3xl overflow-hidden shadow-lg group cursor-pointer border border-white/50",
-                    item.span
-                  )}
-                >
-                  <Image 
-                    src={item.src} 
-                    alt={item.alt} 
-                    fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-end p-6">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
-                      <span className="bg-white/90 backdrop-blur-sm text-emerald-900 text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block">Dokumentasi</span>
-                      <p className="text-white font-bold text-lg leading-tight">{item.alt}</p>
+            <div className="relative">
+              <div 
+                className={cn(
+                  "grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-3 transition-all duration-700 ease-in-out",
+                  isGalleryExpanded ? "max-h-[3000px]" : "max-h-[500px] overflow-hidden",
+                  "md:max-h-none md:overflow-visible md:h-[600px]"
+                )}
+              >
+                {GALLERY_ITEMS.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className={cn(
+                      "relative rounded-3xl overflow-hidden shadow-lg group cursor-pointer border border-white/50",
+                      "min-h-[250px] md:min-h-auto",
+                      item.span
+                    )}
+                  >
+                    <Image 
+                      src={item.src} 
+                      alt={item.alt} 
+                      fill 
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-end p-6">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
+                        <span className="bg-white/90 backdrop-blur-sm text-emerald-900 text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block">Dokumentasi</span>
+                        <p className="text-white font-bold text-lg leading-tight">{item.alt}</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
+
+              <div 
+                className={cn(
+                  "absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-stone-50 to-transparent pointer-events-none md:hidden transition-opacity duration-500",
+                  isGalleryExpanded ? "opacity-0" : "opacity-100"
+                )}
+              />
             </div>
+
+            <div className="mt-8 text-center md:hidden">
+              <button
+                onClick={() => setIsGalleryExpanded(!isGalleryExpanded)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 text-white font-bold shadow-lg active:scale-95 transition-transform"
+              >
+                {isGalleryExpanded ? (
+                  <>
+                    Tutup Galeri <ChevronUp size={20} />
+                  </>
+                ) : (
+                  <>
+                    Lihat Selengkapnya <ChevronDown size={20} />
+                  </>
+                )}
+              </button>
+            </div>
+
           </div>
         </section>
 
@@ -361,7 +432,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- 7. PEMERINTAHAN --- */}
+        {/* --- 7. PEMERINTAHAN (Revised: BPD Dropdown) --- */}
         <section id="pemerintahan" className="py-20 md:py-32 container mx-auto px-6 bg-stone-50">
           <div className="text-center mb-16">
             <SectionHeading className="mx-auto">Struktur Pemerintahan</SectionHeading>
@@ -388,7 +459,8 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+          {/* Grid Perangkat Desa (Exec) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 mb-10">
             {[...GOVERNMENT.officials, ...GOVERNMENT.jaga].map((person, i) => (
               <motion.div
                 key={i}
@@ -406,9 +478,57 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          {/* BPD Dropdown (Space Saver) */}
+          <div className="w-full">
+            <button 
+              onClick={() => setIsBpdOpen(!isBpdOpen)}
+              className="w-full bg-white border border-stone-200 p-6 rounded-3xl flex items-center justify-between hover:bg-stone-50 transition-colors shadow-sm group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <Users2 size={24} />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-lg md:text-xl font-bold text-stone-800 group-hover:text-emerald-700 transition-colors">Badan Permusyawaratan Desa (BPD)</h4>
+                  <p className="text-sm text-stone-500">Klik untuk melihat struktur organisasi</p>
+                </div>
+              </div>
+              <div className={cn("transition-transform duration-300 text-stone-400", isBpdOpen ? "rotate-180" : "rotate-0")}>
+                <ChevronDown size={24} />
+              </div>
+            </button>
+
+            <AnimatePresence>
+              {isBpdOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-6 pb-2">
+                    {GOVERNMENT.bpd?.map((member, i) => (
+                      <div key={i} className="bg-stone-50 p-6 rounded-2xl border border-stone-100 flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-full bg-white text-emerald-600 flex items-center justify-center shrink-0 shadow-sm font-bold text-sm">
+                          {i + 1}
+                        </div>
+                        <div>
+                          <h5 className="font-bold text-stone-800">{member.name}</h5>
+                          <p className="text-xs font-bold text-emerald-600 uppercase mt-1">{member.role}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
         </section>
 
-        {/* --- 8. POTENSI (Bento Grid) --- */}
+        {/* --- 8. POTENSI --- */}
         <section id="potensi" className="py-20 md:py-32 container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 text-center md:text-left">
             <div className="w-full md:w-auto">
@@ -417,7 +537,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[300px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 auto-rows-auto md:auto-rows-[300px]">
             {POTENTIALS.map((item, i) => (
               <motion.div
                 key={i}
@@ -427,7 +547,7 @@ export default function Home() {
                 transition={{ delay: i * 0.1 }}
                 className={cn(
                   "group relative overflow-hidden rounded-[2rem] bg-white p-8 md:p-10 flex flex-col justify-between hover:shadow-2xl transition-all duration-500 border border-stone-200 hover:border-emerald-300 min-h-[260px]",
-                  i === 0 || i === 3 ? "md:col-span-2" : ""
+                  "col-span-1" 
                 )}
               >
                 {item.image ? (
@@ -466,47 +586,136 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- 9. LOKASI DESA --- */}
-        <section className="py-20 md:py-32 container mx-auto px-6">
-          <div className="bg-stone-900 rounded-[2.5rem] p-4 md:p-6 shadow-2xl overflow-hidden relative">
-            <div className="absolute top-8 left-0 right-0 z-10 text-center pointer-events-none">
-              <span className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/90 backdrop-blur-md text-stone-900 text-xs md:text-sm font-bold shadow-lg">
-                <MapPin size={16} className="text-red-500" />
-                PETA WILAYAH
-              </span>
-            </div>
+        {/* --- 9. LOKASI DESA (FINAL FIX: NO GAP & CLICK TO ZOOM) --- */}
+        <section className="py-20 md:py-32 container mx-auto px-6 relative">
+          
+          {/* Ambient Background Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[100%] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-            <div className="w-full h-[400px] md:h-[500px] rounded-[2rem] overflow-hidden bg-stone-800 relative group">
-              <iframe 
-                src={LOCATION.googleMapsUrl} 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100"
-              ></iframe>
-              <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-stone-900/50 to-transparent pointer-events-none"></div>
-            </div>
-
-            <div className="mt-8 text-center px-4">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{LOCATION.title}</h3>
-              <p className="text-stone-400 text-sm md:text-base max-w-2xl mx-auto">{LOCATION.desc}</p>
-              <a 
-                href="http://googleusercontent.com/maps.google.com/7" 
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block mt-6 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors border-b border-emerald-400/30 hover:border-emerald-300 pb-0.5"
-              >
-                Buka di Google Maps ↗
-              </a>
-            </div>
+          <div className="text-center mb-12 relative z-10">
+            <SectionHeading className="mx-auto">Lokasi & Wilayah Desa</SectionHeading>
+            <SectionSub className="mx-auto">
+              {LOCATION.desc}
+            </SectionSub>
           </div>
+
+          {/* Map Container */}
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative w-full max-w-6xl mx-auto"
+          >
+            {/* The Frame (Canvas Style) */}
+            <div className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-white shadow-2xl shadow-stone-200/50 border border-stone-100">
+              
+              {/* Image Area */}
+              <div 
+                className="relative w-full aspect-[4/5] md:aspect-[21/9] bg-stone-50/50 cursor-zoom-in group/map"
+                onClick={() => setIsLightboxOpen(true)}
+              >
+                {LOCATION.mapImage ? (
+                  <>
+                    <Image 
+                      src={LOCATION.mapImage} 
+                      alt="Peta Infografis Desa Tombatu Tiga Selatan" 
+                      fill 
+                      className="object-contain p-4 md:p-8 transition-transform duration-500 group-hover/map:scale-105" 
+                      sizes="(max-width: 768px) 100vw, 1200px"
+                      priority
+                    />
+                     {/* Hover Overlay with Zoom Icon */}
+                    <div className="absolute inset-0 bg-black/0 group-hover/map:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover/map:opacity-100 pointer-events-none">
+                      <div className="bg-white/80 backdrop-blur-md p-3 rounded-full text-stone-800 shadow-lg">
+                        <ZoomIn size={24} />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-stone-400">
+                    Map Image Not Found
+                  </div>
+                )}
+              </div>
+
+              {/* Control Bar */}
+              <div className="relative z-10 p-6 md:p-8 bg-white border-t border-stone-100 flex flex-col md:flex-row items-center justify-center gap-4">
+                <div className="hidden md:flex items-center gap-2 text-stone-500 text-sm font-medium bg-stone-100/80 px-4 py-2 rounded-full">
+                  <Map size={16} className="text-emerald-600" />
+                  <span>Klik peta untuk memperjelas</span>
+                </div>
+                <a 
+                  href={LOCATION.googleMapsUrl} 
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-3 w-full md:w-auto px-8 py-3.5 rounded-full bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 hover:scale-105 active:scale-95 transition-all duration-300"
+                >
+                  <MapPin size={20} className="text-white" />
+                  <span>Buka Google Maps</span>
+                  <ArrowUpRight size={18} className="opacity-80" />
+                </a>
+              </div>
+
+            </div>
+
+            {/* Mobile Hint */}
+            <div className="mt-4 text-center md:hidden">
+              <p className="text-xs text-stone-400 flex items-center justify-center gap-1">
+                <ZoomIn size={14} className="text-emerald-500" />
+                Tap gambar peta untuk zoom fullscreen
+              </p>
+            </div>
+
+          </motion.div>
         </section>
 
       </main>
       <Footer />
+
+      {/* --- LIGHTBOX MODAL (Untuk Zoom Peta) --- */}
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 cursor-zoom-out"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+             {/* Close Button */}
+            <button 
+              className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all"
+              onClick={() => setIsLightboxOpen(false)}
+            >
+              <X size={32} />
+            </button>
+
+            {/* Full Image Container */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full h-full max-w-7xl max-h-[90vh]"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking image itself
+            >
+               {LOCATION.mapImage && (
+                  <Image 
+                    src={LOCATION.mapImage} 
+                    alt="Full Peta Desa" 
+                    fill 
+                    className="object-contain"
+                    sizes="100vw"
+                    priority
+                  />
+               )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }
