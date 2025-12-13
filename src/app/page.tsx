@@ -18,9 +18,9 @@ import {
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { 
-  ArrowRight, Leaf, Users, Crown, ChevronRight, Trees, Wheat, Utensils, 
+  ArrowRight, Leaf, Users, ChevronRight, Trees, Wheat, Utensils, 
   CheckCircle2, MapPin, Mountain, Calendar, ArrowUpRight, Home as HomeIcon, Map, Flag,
-  History as HistoryIcon, ChevronDown, ChevronUp, ZoomIn, X, Users2
+  History as HistoryIcon, ChevronDown, ChevronUp, ZoomIn, X, Users2, UserCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -439,7 +439,7 @@ export default function Home() {
             <SectionSub className="mx-auto">Orang-orang berdedikasi yang melayani masyarakat Tombatu Tiga Selatan.</SectionSub>
           </div>
 
-          {/* Banner Photo */}
+          {/* Banner Photo - REVISI: Bersih tanpa teks overlay */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -452,16 +452,10 @@ export default function Home() {
               fill
               className="object-cover object-center transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 to-transparent flex items-end justify-center pb-8">
-               <span className="text-white font-bold tracking-widest uppercase bg-emerald-600/90 px-6 py-2.5 rounded-full backdrop-blur-sm shadow-lg border border-emerald-400/50">
-                 Kekompakan Perangkat Desa
-               </span>
-            </div>
           </motion.div>
 
           {/* Grid Perangkat Desa (Executive) - Hukum Tua ADDED */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 mb-10">
-            {/* REVISI: Menambahkan GOVERNMENT.hukumTua di awal array */}
             {[GOVERNMENT.hukumTua, ...GOVERNMENT.officials, ...GOVERNMENT.jaga].map((person, i) => (
               <motion.div
                 key={i}
@@ -471,7 +465,6 @@ export default function Home() {
                 transition={{ delay: i * 0.05 }}
                 className={cn(
                   "bg-white p-6 md:p-8 rounded-3xl shadow-sm border transition-all duration-300 group text-center md:text-left",
-                  // REVISI: Styling khusus untuk Hukum Tua (border emerald + shadow lebih besar)
                   person.role.includes("Hukum Tua") 
                     ? "border-emerald-200 hover:border-emerald-400 hover:shadow-2xl shadow-emerald-50 relative overflow-hidden" 
                     : "border-stone-100 hover:shadow-xl hover:border-emerald-100 hover:-translate-y-1"
@@ -481,8 +474,8 @@ export default function Home() {
                   "w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-300 mx-auto md:mx-0 shadow-inner",
                   person.role.includes("Hukum Tua") ? "bg-emerald-100 text-emerald-600" : "bg-stone-100 text-stone-400 group-hover:bg-emerald-600 group-hover:text-white"
                 )}>
-                  {/* REVISI: Icon Crown untuk Hukum Tua */}
-                  {person.role.includes("Hukum Tua") ? <Crown size={28} /> : <Users size={24} />}
+                  {/* REVISI: Icon UserCheck untuk Hukum Tua */}
+                  {person.role.includes("Hukum Tua") ? <UserCheck size={28} /> : <Users size={24} />}
                 </div>
                 <h4 className="font-bold text-stone-800 text-lg mb-1">{person.name}</h4>
                 <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">{person.role}</p>
