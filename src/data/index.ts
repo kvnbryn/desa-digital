@@ -175,7 +175,7 @@ export const SDGS_GOALS = [
 export const LOCATION = {
   title: "Lokasi Desa",
   desc: "Desa Tombatu Tiga Selatan terletak strategis di Kecamatan Tombatu, dikelilingi keindahan alam Minahasa Tenggara.",
-  googleMapsUrl: "http://googleusercontent.com/maps.google.com/7",
+  googleMapsUrl: "https://maps.app.goo.gl/gPUbBrQtnhxp9aDz8",
   mapImage: "/images/peta-desa.jpg" 
 };
 
