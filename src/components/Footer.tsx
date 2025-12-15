@@ -55,10 +55,6 @@ export default function Footer() {
                 <span>{SITE_CONFIG.address}</span>
               </div>
               <div className="flex items-center gap-4 justify-center md:justify-start">
-                <Mail size={20} className="text-emerald-500 shrink-0" />
-                <span>{SITE_CONFIG.contact.email}</span>
-              </div>
-              <div className="flex items-center gap-4 justify-center md:justify-start">
                 <Phone size={20} className="text-emerald-500 shrink-0" />
                 <span>{SITE_CONFIG.contact.phone}</span>
               </div>

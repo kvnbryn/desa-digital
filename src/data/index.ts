@@ -9,7 +9,7 @@ export const SITE_CONFIG = {
   address: "Kecamatan Tombatu, Kabupaten Minahasa Tenggara, Sulawesi Utara",
   contact: {
     email: "admin@tombatutigaselatan.desa.id",
-    phone: "+62 812-3456-7890",
+    phone: "+62 812-4320-8251",
   }
 };
 
